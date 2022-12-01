@@ -1,33 +1,18 @@
 class SessionsController < ApplicationController
-    def signup
-        user = User.new(username: param[:username], email: param[:email], password: password[:password])
-    
-        # if user is saved
-        if user.save
-          # we encrypt user info using the pre-define methods in application controller
-          token = encode_user_data({ user_data: user.id })
-    
-          # return to user
-          render json: { token: token }
+    skip_before_action :authorized, only: :create
+
+    def create
+        user = User.find_by(username: params[:username])
+        if user
+            session[:user_id] = user.id
+            render json: user, status: :created
         else
-          # render error message
-          render json: { message: "invalid credentials" }
+            render json: {error: {login: "invalid username or password"}}, status: :unathorized
         end
     end
-    
-    def login
-        user = User.find_by(email: param[:email])
-    
-        # you can use bcrypt to password authentication
-        if user && user.password == param[:password]
-    
-          # we encrypt user info using the pre-define methods in application controller
-          token = encode_user_data({ user_data: user.id })
-    
-          # return to user
-          render json: { token: token }
-        else
-          render json: { message: "invalid credentials" }
-        end
+
+    def destroy
+        session.delete :user_id
+        head :no_content
     end
 end

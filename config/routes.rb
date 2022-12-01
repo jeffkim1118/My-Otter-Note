@@ -1,9 +1,12 @@
 Rails.application.routes.draw do
-  resources :users
-  resources :notes
+  # resources :users
+  # resources :notes
  
+  get "/users", to: "users#index"
 
-  post "/login", to: "sessions#login"
-  post "/signup", to: "sessions#signup"
+  post "/users", to: "users#create"
+  post "/login", to: "sessions#create"
+  
+  delete "/users/:id", to: "users#destroy"
   
 end
