@@ -1,31 +1,38 @@
 class NotesController < ApplicationController
   def index
-    notes = Note.all()
-    render json: notes
+    @notes = Note.all
+    render json: @notes
   end
 
   def show
-    note = Note.find_by(:id)
-    if note
-        render json: note
+    @user = User.find_by(id: session[:user_id])
+    @note = @user.notes.find_by(:id)
+    if @note
+        render json: @note
     else
         render json: {error: "The note doesn't exist"}
     end
   end
 
   def create
-    note = Note.create(note_params)
-    if note.valid?
-        render json: note, status: :created
+    @user = User.find_by(id: session[:user_id])
+    if @user.exist?
+        @note = @user.notes.create(note_params)
+        if @note.valid?
+            render json: @note, status: :created
+        else
+            render json: {error: "Unable to create a note"}
+        end
     else
-        render json: {error: "Unable to create a note"}
+        render json: {error: "User can't create a note!"}
     end
   end
 
   def destroy
-    note = Note.find_by(:id)
-    if note.exist?
-        note.destroy
+    @user= User.find_by(id: session[:user_id])
+    @note = @user.notes.find_by(:id)
+    if @note.exist?
+        @note.destroy
         head.no_content
     else
         render json: {error: "Note doesn't exist. Can't delete something that doesn't exist!"}, status: :not_found
@@ -35,6 +42,6 @@ class NotesController < ApplicationController
   private
 
   def note_params
-    params.permit(:title, :content, :date, :user_id)
+    params.require(:user).permit(:title, :content, :date, :user_id)
   end
 end
