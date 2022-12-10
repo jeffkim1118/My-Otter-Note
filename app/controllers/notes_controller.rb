@@ -28,6 +28,17 @@ class NotesController < ApplicationController
     end
   end
 
+  def update
+    @user = User.find_by(id: session[:user_id])
+    if @user.exist?
+      @note = @user.notes.find_by(:id)
+      if @note.exist?
+        @note.update(update_param)
+        render json: @note, status: :accepted
+      end
+    end
+  end
+
   def destroy
     @user= User.find_by(id: session[:user_id])
     @note = @user.notes.find_by(:id)
@@ -43,5 +54,9 @@ class NotesController < ApplicationController
 
   def note_params
     params.require(:user).permit(:title, :content, :date, :user_id)
+  end
+
+  def update_param
+    params.require(:user).permit(:title, :content, :date)
   end
 end

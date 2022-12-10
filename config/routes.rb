@@ -17,6 +17,8 @@ Rails.application.routes.draw do
 
   post "/notes", to: "notes#create"
 
-  
+  patch "/notes/:id", to: "notes#update"
+
+  delete "/notes/:id", to: "notes#destroy"
 
 end
