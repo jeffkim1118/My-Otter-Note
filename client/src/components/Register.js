@@ -19,7 +19,7 @@ function Register({setCurrentUser}){
             setRegisterStatus(false);
         }else{
             setRegisterStatus(true);
-            fetch(`/users`,{
+            fetch(`http://localhost:3000/users`,{
                 method: 'POST',
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify(newUser)
@@ -32,20 +32,13 @@ function Register({setCurrentUser}){
 
     return(
         <div className="Registration-form">
-            {registerStatus === false ? <div><p>Registration failed!</p></div> : <div><p>Registration complete!</p></div>}
             <form onSubmit={handleRegister}>
-                <label>Username:
-                    <input type="text" value={username} onChange={setUsername((e) => e.target.value)}></input>
-                </label>
-                
-                <label>Email:
-                    <input type="text" value={email} onChange={setEmail((e) => e.target.value)}></input>
-                </label>
-                
-                <label>Password:
-                    <input type="text" value={password} onChange={setPassword((e) => e.target.value)}></input>
-                </label>
-                
+                <label>Username</label>
+                    <input type="text" value={username} onChange={(e) => setUsername(e.target.value)}></input>             
+                <label>Email</label>
+                    <input type="text" value={email} onChange={(e) => setEmail(e.target.value)}></input>              
+                <label>Password</label>
+                    <input type="text" value={password} onChange={(e) => setPassword(e.target.value)}></input>               
                 <button type="submit">Register</button>
             </form>
         </div>

@@ -2,6 +2,7 @@ import './App.css';
 import Login from "./components/Login";
 import Register from './components/Register';
 import { useState } from 'react';
+import Home from './components/Home';
 
 
 function App() {
@@ -9,7 +10,7 @@ function App() {
 
   return (
     <div className="App">
-      <Login setCurrentUser={setCurrentUser}/>
+      {currentUser ? <Home currentUser={currentUser}/> : <Login setCurrentUser={setCurrentUser}/>}
       <Register setCurrentUser={setCurrentUser}/>
     </div>
   );
