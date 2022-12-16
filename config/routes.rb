@@ -10,6 +10,8 @@ Rails.application.routes.draw do
   
   delete "/users/:id", to: "users#destroy"
   
+  # Keeping user to be loggedin.
+  get "/me", to: "users#loggedin"
 
   # Note routes
   get "/notes", to: "notes#index"

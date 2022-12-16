@@ -8,6 +8,7 @@ import Home from './components/Home';
 function App() {
   const[currentUser, setCurrentUser] = useState()
 
+  
   return (
     <div className="App">
       {currentUser ? <Home currentUser={currentUser}/> : <Login setCurrentUser={setCurrentUser}/>}
